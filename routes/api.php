@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\actorsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\genresController;
+use App\Http\Controllers\moviesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +18,15 @@ use App\Http\Controllers\genresController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::apiResource("users", UserController::class);
 Route::apiResource("genres", genresController::class);
-Route::post("login", [UserController::class, "login"]);
+Route::apiResource("actors", actorsController::class);
+Route::apiResource("movies", moviesController::class);
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login')->name('login');
+    Route::post('register', 'register')->name('register');
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

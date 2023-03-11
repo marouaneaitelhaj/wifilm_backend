@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -19,42 +23,18 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validation = $request->validate([
-            "name" => "required|min:3|max:255",
-            "email" => "required|email|unique:users,email",
-            "password" => "required|min:8|max:255"
-        ]);
-        $user = User::create([
-            "name" => $validation["name"],
-            "email" => $validation["email"],
-            "password" => bcrypt($validation["password"])
-        ]);
-        return 1;
-    }
+
 
     /**
      * Display the specified resource.
      */
     public function show(User $user)
     {
-        
     }
     /**
      * login function hh.
      */
-    public function login(Request $request){
-        $validation = $request->validate([
-            "email" => "required|email",
-            "password" => "required|min:8|max:255"
-        ]);
-        if(auth()->attempt($validation)){
-            return 1;
-        }else{
-            return 0;
-        }
-    }
+
 
     /**
      * Update the specified resource in storage.
